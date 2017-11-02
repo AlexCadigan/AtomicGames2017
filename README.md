@@ -26,7 +26,7 @@ The [Atomic Games](http://atomic-games.atomicobject.com/) is a programming compe
 
 ### Setting up the Game
 
-* `$ cd server`
+* `$ cd Server`
 * `$ bundle install`
 
 ### Running the Game
@@ -39,7 +39,7 @@ The [Atomic Games](http://atomic-games.atomicobject.com/) is a programming compe
 
 #### Server
 
-* `$ cd server`
+* `$ cd Server`
 * `$ ruby src/app.rb`
 
 ## Authors
