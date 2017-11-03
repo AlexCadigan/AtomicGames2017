@@ -1,44 +1,62 @@
-#!/usr/bin/python
+# Project: Atomic Games 2017
+# Authors: Alex Cadigan and Skyler Norgaard
+# Date Last Modified: 11/3/2017
+# Description: This file contains code to run a client to play a simple video game.  The
+# client uses a simple AI to play the game.  Currently the AI has workers move in random
+# directions.  If they stumble upon a resource, they will collect it.  Then they continue 
+# to move randomly
 
+# Imports:
 import sys
 import json
 import random
 import numpy as np
 
+# Imports the socket server in the method corresponding to which Python version is being used
 if (sys.version_info > (3, 0)):
-    print("Python 3.X detected")
-    import socketserver as ss
+
+	print("Python 3.X detected")
+	import socketserver as socketServer
+
 else:
-    print("Python 2.X detected")
-    import SocketServer as ss
+
+	print("Python 2.X detected")
+	import SocketServer as socketServer
+
+# This class deals with all incoming network issues
+class NetworkHandler(socketServer.StreamRequestHandler):
+
+	
 
 
-class NetworkHandler(ss.StreamRequestHandler):
-    def handle(self):
-        game = Game()
 
-        start = True
-        while True:
-            data = self.rfile.readline().decode() # reads until '\n' encountered
-            json_data = json.loads(str(data))
-            grid = game.get_grid()
 
-            #print(json.dumps(json_data, indent=4, sort_keys=True))
-            #print(game.find_barriers(json_data))
+# class NetworkHandler(socketServer.StreamRequestHandler):
+#     def handle(self):
+#         game = Game()
 
-            #get initial locations, or anythig else we'd want to get at beginning
-            if start == True:
-                locations = game.get_initial_location(json_data)
-                all_units = units = set([unit['id'] for unit in json_data['unit_updates'] if unit['type'] != 'base'])
-                response = game.move_all_randomly(json_data, all_units).encode()
-                self.wfile.write(response)
-                start = False
+#         start = True
+#         while True:
+#             data = self.rfile.readline().decode() # reads until '\n' encountered
+#             json_data = json.loads(str(data))
+#             grid = game.get_grid()
 
-            else:
-                locations = game.update_location(json_data, locations) #get new locations after each move
-                response = game.move_all_randomly(json_data, all_units).encode()
-                print(locations)
-                self.wfile.write(response)
+#             #print(json.dumps(json_data, indent=4, sort_keys=True))
+#             #print(game.find_barriers(json_data))
+
+#             #get initial locations, or anythig else we'd want to get at beginning
+#             if start == True:
+#                 locations = game.get_initial_location(json_data)
+#                 all_units = units = set([unit['id'] for unit in json_data['unit_updates'] if unit['type'] != 'base'])
+#                 response = game.move_all_randomly(json_data, all_units).encode()
+#                 self.wfile.write(response)
+#                 start = False
+
+#             else:
+#                 locations = game.update_location(json_data, locations) #get new locations after each move
+#                 response = game.move_all_randomly(json_data, all_units).encode()
+#                 print(locations)
+#                 self.wfile.write(response)
 
 
 
@@ -189,6 +207,6 @@ if __name__ == "__main__":
     port = int(sys.argv[1]) if (len(sys.argv) > 1 and sys.argv[1]) else 9090
     host = '0.0.0.0'
 
-    server = ss.TCPServer((host, port), NetworkHandler)
+    server = socketServer.TCPServer((host, port), NetworkHandler)
     print("listening on {}:{}".format(host, port))
     server.serve_forever()
