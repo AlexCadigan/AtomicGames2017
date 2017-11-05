@@ -38,10 +38,12 @@ class NetworkHandler(socketServer.StreamRequestHandler):
             jsonData = json.loads(str(data))
 
             # Prints the json data from the server
-            print(json.dumps(jsonData, indent = 4, sort_keys = True))
+            # print(json.dumps(jsonData, indent = 4, sort_keys = True))
 
             # Creates and sends a response to the server with unit commands
-            gameResponse = game.getRandomMove(jsonData).encode()
+            commands = game.getRandomMove(jsonData).encode()
+            print(json.dumps(json.loads(str(commands.decode())), indent = 4, sort_keys = True))
+            gameResponse = commands
             self.wfile.write(gameResponse)
 
 # This class contains functions to control the game and command units
@@ -63,16 +65,28 @@ class Game:
         # Unions the two sets together
         self.units |= units
 
+        masterCommand = {}
+        commands = []
+
+        # Builds the commands to move each unit in a random direction
+        for unit in self.units:
+
+        	command = {"command": "MOVE", "unit": unit, "dir": random.choice(self.directions)}
+        	commands.append(command)
+
         # Builds the command to move a random unit in a random direction
-        unit = random.choice(tuple(self.units))
-        direction = random.choice(self.directions)
-        command = {"commands": [{"command": "MOVE", "unit": unit, "dir": direction}]}
-        response = json.dumps(command, separators=(',',':')) + '\n'
+        # unit = random.choice(tuple(self.units))
+        # direction = random.choice(self.directions)
+        # command = {"commands": [{"command": "MOVE", "unit": unit, "dir": direction}]}
+
+        masterCommand = {"commands": commands}
+
+        response = json.dumps(masterCommand, separators=(',',':')) + '\n'
         return response
 
 # Starts the client listening from an incoming connection from the server
 if __name__ == "__main__":
-	
+
     port = int(sys.argv[1]) if (len(sys.argv) > 1 and sys.argv[1]) else 9090
     host = '0.0.0.0'
 
