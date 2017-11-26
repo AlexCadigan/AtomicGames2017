@@ -47,7 +47,3 @@ The [Atomic Games](http://atomic-games.atomicobject.com/) is a programming compe
 * [Atomic Object](https://atomicobject.com/) - Created all sdks and the server to run the game
 * [Alex Cadigan](https://github.com/AlexCadigan)
 * [Skyler Norgaard](https://github.com/skylernorgaard1)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
