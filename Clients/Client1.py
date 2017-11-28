@@ -1,9 +1,10 @@
 # Project: Atomic Games 2017
 # Authors: Alex Cadigan and Skyler Norgaard
-# Date Last Modified: 11/13/2017
+# Date Last Modified: 11/27/2017
 # Description: This file contains code to run a client to play a video game.  The
 # client uses a simple AI to play the game.  Currently the AI has workers move in random
-# directions.  The workers will not try to move into walls or other blocked objects.
+# directions.  The workers will not try to move into walls or other blocked objects.  If
+# the workers are near a resource, they will collect it.  
 
 # Imports:
 import json
